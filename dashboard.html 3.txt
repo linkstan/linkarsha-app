@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Linkarsha Studio</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+body{
+margin:0;
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
+background:linear-gradient(135deg,#f6f7fb,#eef2ff,#fdfdfd);
+min-height:100vh;
+}
+
+/* TOP BAR */
+.topbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:22px 40px;
+background:rgba(255,255,255,0.7);
+backdrop-filter:blur(12px);
+box-shadow:0 4px 20px rgba(0,0,0,0.06);
+position:sticky;
+top:0;
+z-index:10;
+}
+
+.logo{
+font-weight:800;
+font-size:20px;
+letter-spacing:0.3px;
+}
+
+.logout{
+background:#111;
+color:white;
+padding:10px 18px;
+border-radius:30px;
+cursor:pointer;
+font-weight:600;
+}
+
+/* MAIN GRID */
+.wrap{
+max-width:1150px;
+margin:40px auto;
+display:grid;
+grid-template-columns:360px 1fr;
+gap:35px;
+padding:0 20px;
+}
+
+/* GLASS CARD */
+.card{
+background:rgba(255,255,255,0.75);
+backdrop-filter:blur(18px);
+border-radius:26px;
+padding:28px;
+box-shadow:0 20px 60px rgba(0,0,0,0.08);
+animation:fade .5s ease;
+}
+
+@keyframes fade{
+from{opacity:0;transform:translateY(10px);}
+to{opacity:1;}
+}
+
+/* PREVIEW */
+.avatar{
+width:95px;
+height:95px;
+border-radius:50%;
+background:linear-gradient(135deg,#6366f1,#7c3aed);
+color:white;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:36px;
+margin:auto;
+margin-bottom:14px;
+background-size:cover;
+background-position:center;
+}
+
+.username{
+font-weight:800;
+font-size:20px;
+}
+
+.bio{
+color:#666;
+margin:6px 0 15px;
+}
+
+.linkbtn{
+display:block;
+padding:14px;
+margin:10px 0;
+border-radius:16px;
+background:white;
+box-shadow:0 10px 25px rgba(0,0,0,0.08);
+text-decoration:none;
+color:#111;
+font-weight:600;
+transition:.25s;
+}
+.linkbtn:hover{
+transform:scale(1.03);
+}
+
+/* SECTION */
+.section{
+margin-bottom:22px;
+border-bottom:1px solid #eee;
+padding-bottom:15px;
+}
+
+.sectionHeader{
+font-weight:800;
+font-size:16px;
+display:flex;
+justify-content:space-between;
+cursor:pointer;
+margin-bottom:10px;
+}
+
+.sectionContent{
+display:none;
+animation:fade .3s ease;
+}
+
+input,select{
+width:100%;
+padding:13px;
+margin:8px 0;
+border-radius:14px;
+border:1px solid #eee;
+font-size:14px;
+}
+
+button{
+padding:12px 18px;
+border:none;
+border-radius:16px;
+background:linear-gradient(135deg,#6366f1,#7c3aed);
+color:white;
+font-weight:700;
+cursor:pointer;
+margin-top:8px;
+}
+
+.stat{
+background:#f1f5ff;
+padding:12px;
+border-radius:12px;
+margin:8px 0;
+font-weight:700;
+}
+  /* ===============================
+MOBILE RESPONSIVE SYSTEM
+=============================== */
+
+@media (max-width: 1024px){
+
+.container{
+flex-direction:column;
+padding:20px;
+gap:20px;
+}
+
+.left,.right{
+width:100%;
+}
+
+.header{
+padding:18px 20px;
+font-size:18px;
+}
+
+.previewCard{
+padding:22px;
+}
+
+}
+
+/* MOBILE PHONE */
+@media (max-width: 768px){
+
+body{
+padding:0;
+}
+
+/* stack layout */
+.container{
+flex-direction:column;
+padding:12px;
+gap:16px;
+}
+
+/* cards full width */
+.left,.right{
+width:100%;
+border-radius:18px;
+padding:18px;
+}
+
+/* header smaller */
+.header{
+font-size:16px;
+padding:16px;
+text-align:center;
+}
+
+/* avatar */
+.avatar{
+width:80px;
+height:80px;
+font-size:28px;
+}
+
+/* buttons big for thumb */
+button{
+width:100%;
+padding:16px;
+border-radius:14px;
+font-size:15px;
+}
+
+/* inputs */
+input{
+width:100%;
+padding:14px;
+font-size:15px;
+}
+
+/* link buttons */
+.linkbtn{
+padding:15px;
+font-size:15px;
+}
+
+/* preview card */
+.previewCard{
+padding:20px;
+}
+
+/* collapse spacing */
+.sectionTitle{
+font-size:16px;
+}
+
+/* hero text (homepage) */
+.title{
+font-size:34px !important;
+line-height:1.2;
+}
+
+.subtitle{
+font-size:15px !important;
+}
+
+/* nav mobile */
+.nav{
+flex-direction:column;
+gap:12px;
+padding:18px;
+text-align:center;
+}
+
+.hero{
+padding:30px 18px;
+}
+
+}
+
+/* SMALL MOBILE */
+@media (max-width: 420px){
+
+.title{
+font-size:28px !important;
+}
+
+.avatar{
+width:70px;
+height:70px;
+font-size:24px;
+}
+
+}
+</style>
+
+
+</head>
+
+
+<body>
+
+
+<div class="topbar">
+<div class="logo">Linkarsha Creator Studio ✦</div>
+<div class="logout" onclick="logout()">Logout</div>
+</div>
+
+
+<div class="wrap">
+
+
+<!-- PREVIEW -->
+
+
+<div class="card">
+<div class="avatar" id="avatar">U</div>
+<div class="username" id="previewUsername">@user</div>
+<div class="bio" id="previewBio"></div>
+<div id="previewLinks"></div>
+</div>
+
+
+<!-- CONTROLS -->
+
+
+<div class="card">
+
+
+<!-- BIO -->
+
+
+<div class="section">
+<div class="sectionHeader" onclick="toggle(this)">
+<span>Profile & Bio</span>
+<span>▾</span>
+</div>
+<div class="sectionContent">
+<input id="bioInput" placeholder="Write your bio">
+<button onclick="saveBio()">Save Bio</button>
+</div>
+</div>
+
+
+<!-- THEME -->
+
+
+<div class="section">
+<div class="sectionHeader" onclick="toggle(this)">
+<span>Theme & Style</span>
+<span>▾</span>
+</div>
+<div class="sectionContent">
+<select id="themeSelect">
+<option value="default">Default Luxury</option>
+<option value="dark">Dark Mode</option>
+<option value="glass">Glass Premium</option>
+<option value="minimal">Minimal Clean</option>
+</select>
+<button onclick="saveTheme()">Apply Theme</button>
+</div>
+</div>
+
+
+<!-- ADD LINK -->
+
+
+<div class="section">
+<div class="sectionHeader" onclick="toggle(this)">
+<span>Add Links</span>
+<span>▾</span>
+</div>
+<div class="sectionContent">
+<input id="title" placeholder="Link title">
+<input id="url" placeholder="https://">
+<button onclick="addLink()">Add Link</button>
+<div id="linksList"></div>
+</div>
+</div>
+
+
+<!-- ANALYTICS -->
+
+
+<div class="section">
+<div class="sectionHeader" onclick="toggle(this)">
+<span>Analytics</span>
+<span>▾</span>
+</div>
+<div class="sectionContent">
+<div class="stat" id="viewStat">0 profile views</div>
+<div id="clickStats"></div>
+</div>
+</div>
+
+
+</div>
+</div>
+
+
+<script>
+const { createClient } = supabase;
+
+const supabaseClient=createClient(
+"https://pibrvhziqkaitaacbegy.supabase.co",
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBpYnJ2aHppcWthaXRhYWNiZWd5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE0Mzc3MDQsImV4cCI6MjA4NzAxMzcwNH0.gBi73cyS6exLNfm1iz6IwAzWFXXxFAjgjlnbuHx7HMw");
+
+let userId=null;
+
+function toggle(el){
+const content=el.nextElementSibling;
+content.style.display = content.style.display==="block"?"none":"block";
+}
+
+async function load(){
+const {data:{user}}=await supabaseClient.auth.getUser();
+if(!user){location.href="/";return;}
+userId=user.id;
+
+const {data:profile}=await supabaseClient
+.from("profiles")
+.select("*")
+.eq("id",userId)
+.single();
+
+document.getElementById("previewUsername").innerText="@"+profile.username;
+document.getElementById("previewBio").innerText=profile.bio||"";
+document.getElementById("bioInput").value=profile.bio||"";
+document.getElementById("viewStat").innerText=(profile.views||0)+" profile views";
+
+if(profile.avatar){
+document.getElementById("avatar").style.background=`url('${profile.avatar}')`;
+document.getElementById("avatar").innerText="";
+}else{
+document.getElementById("avatar").innerText=profile.username.charAt(0).toUpperCase();
+}
+
+document.getElementById("themeSelect").value=profile.theme||"default";
+
+loadLinks();
+}
+
+async function saveBio(){
+const bio=document.getElementById("bioInput").value;
+await supabaseClient.from("profiles").update({bio}).eq("id",userId);
+load();
+}
+
+async function saveTheme(){
+const theme=document.getElementById("themeSelect").value;
+await supabaseClient.from("profiles").update({theme}).eq("id",userId);
+alert("Theme saved");
+}
+
+async function addLink(){
+const title=document.getElementById("title").value;
+const url=document.getElementById("url").value;
+if(!title||!url)return;
+
+await supabaseClient.from("links").insert([
+{user_id:userId,title,url,position:Date.now(),clicks:0}
+]);
+
+document.getElementById("title").value="";
+document.getElementById("url").value="";
+loadLinks();
+}
+
+async function loadLinks(){
+const {data}=await supabaseClient
+.from("links")
+.select("*")
+.eq("user_id",userId)
+.order("position",{ascending:true});
+
+let html="";
+let preview="";
+let clicks="";
+
+data.forEach(l=>{
+html+=`<div>${l.title}</div>`;
+preview+=`<a class="linkbtn">${l.title}</a>`;
+clicks+=`<div class="stat">${l.title} → ${l.clicks||0} clicks</div>`;
+});
+
+document.getElementById("linksList").innerHTML=html;
+document.getElementById("previewLinks").innerHTML=preview;
+document.getElementById("clickStats").innerHTML=clicks;
+}
+
+async function logout(){
+await supabaseClient.auth.signOut();
+location.href="/";
+}
+
+load();
+</script>
+
+
+</body>
+</html>
+
+

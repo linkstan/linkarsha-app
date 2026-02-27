@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Linkarsha</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+body{
+margin:0;
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+transition:0.4s;
+}
+
+/* container */
+.card{
+width:360px;
+max-width:92%;
+border-radius:28px;
+padding:40px 25px;
+text-align:center;
+box-shadow:0 30px 80px rgba(0,0,0,0.15);
+backdrop-filter:blur(20px);
+transition:0.4s;
+}
+
+.avatar{
+width:95px;
+height:95px;
+border-radius:50%;
+margin:auto;
+margin-bottom:14px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:36px;
+font-weight:700;
+color:white;
+background:#6366f1;
+background-size:cover;
+background-position:center;
+}
+
+.username{
+font-size:22px;
+font-weight:700;
+display:flex;
+align-items:center;
+justify-content:center;
+gap:6px;
+}
+
+.verified{
+width:18px;
+height:18px;
+background:#1da1f2;
+border-radius:50%;
+display:inline-flex;
+align-items:center;
+justify-content:center;
+color:white;
+font-size:12px;
+}
+
+.bio{
+margin-top:6px;
+margin-bottom:18px;
+font-size:14px;
+opacity:0.8;
+}
+
+.link{
+display:block;
+padding:15px;
+margin:12px 0;
+border-radius:16px;
+text-decoration:none;
+font-weight:600;
+transition:0.25s;
+}
+
+.link:hover{transform:scale(1.04);}
+
+.footer{
+margin-top:18px;
+font-size:12px;
+opacity:0.5;
+}
+
+/* THEMES */
+
+/* default luxury */
+.theme-default{
+background:linear-gradient(135deg,#eef2ff,#f5f3ff,#fafafa);
+}
+.theme-default .card{background:rgba(255,255,255,0.85);}
+.theme-default .link{background:white;color:#111;box-shadow:0 12px 25px rgba(0,0,0,0.08);}
+
+/* glass premium */
+.theme-glass{
+background:linear-gradient(135deg,#667eea,#764ba2);
+}
+.theme-glass .card{background:rgba(255,255,255,0.15);color:white;}
+.theme-glass .link{background:rgba(255,255,255,0.2);color:white;}
+
+/* dark creator */
+.theme-dark{
+background:#0f172a;
+color:white;
+}
+.theme-dark .card{background:#020617;}
+.theme-dark .link{background:#111827;color:white;}
+
+/* neon influencer */
+.theme-neon{
+background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);
+color:white;
+}
+.theme-neon .card{background:rgba(0,0,0,0.4);}
+.theme-neon .link{background:linear-gradient(135deg,#ff00cc,#3333ff);color:white;}
+
+/* minimal clean */
+.theme-minimal{
+background:#ffffff;
+}
+.theme-minimal .card{background:white;box-shadow:none;border:1px solid #eee;}
+.theme-minimal .link{background:#f1f5f9;color:#111;}
+  /* ===============================
+MOBILE RESPONSIVE SYSTEM
+=============================== */
+
+@media (max-width: 1024px){
+
+.container{
+flex-direction:column;
+padding:20px;
+gap:20px;
+}
+
+.left,.right{
+width:100%;
+}
+
+.header{
+padding:18px 20px;
+font-size:18px;
+}
+
+.previewCard{
+padding:22px;
+}
+
+}
+
+/* MOBILE PHONE */
+@media (max-width: 768px){
+
+body{
+padding:0;
+}
+
+/* stack layout */
+.container{
+flex-direction:column;
+padding:12px;
+gap:16px;
+}
+
+/* cards full width */
+.left,.right{
+width:100%;
+border-radius:18px;
+padding:18px;
+}
+
+/* header smaller */
+.header{
+font-size:16px;
+padding:16px;
+text-align:center;
+}
+
+/* avatar */
+.avatar{
+width:80px;
+height:80px;
+font-size:28px;
+}
+
+/* buttons big for thumb */
+button{
+width:100%;
+padding:16px;
+border-radius:14px;
+font-size:15px;
+}
+
+/* inputs */
+input{
+width:100%;
+padding:14px;
+font-size:15px;
+}
+
+/* link buttons */
+.linkbtn{
+padding:15px;
+font-size:15px;
+}
+
+/* preview card */
+.previewCard{
+padding:20px;
+}
+
+/* collapse spacing */
+.sectionTitle{
+font-size:16px;
+}
+
+/* hero text (homepage) */
+.title{
+font-size:34px !important;
+line-height:1.2;
+}
+
+.subtitle{
+font-size:15px !important;
+}
+
+/* nav mobile */
+.nav{
+flex-direction:column;
+gap:12px;
+padding:18px;
+text-align:center;
+}
+
+.hero{
+padding:30px 18px;
+}
+
+}
+
+/* SMALL MOBILE */
+@media (max-width: 420px){
+
+.title{
+font-size:28px !important;
+}
+
+.avatar{
+width:70px;
+height:70px;
+font-size:24px;
+}
+
+}
+</style>
+</head>
+
+<body class="theme-default">
+
+<div class="card">
+
+<div class="avatar" id="avatar">U</div>
+
+<div class="username" id="username">@user</div>
+
+<div class="bio" id="bio"></div>
+
+<div id="links"></div>
+
+<div class="footer">Powered by Linkarsha</div>
+
+</div>
+
+<script>
+const { createClient } = supabase;
+
+const supabaseClient=createClient(
+"https://pibrvhziqkaitaacbegy.supabase.co",
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBpYnJ2aHppcWthaXRhYWNiZWd5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE0Mzc3MDQsImV4cCI6MjA4NzAxMzcwNH0.gBi73cyS6exLNfm1iz6IwAzWFXXxFAjgjlnbuHx7HMw"
+);
+
+let username=window.location.pathname.replace("/","").toLowerCase();
+
+async function load(){
+
+const {data:profile}=await supabaseClient
+.from("profiles")
+.select("*")
+.ilike("username",username)
+.single();
+
+if(!profile){
+document.body.innerHTML="<h2>User not found</h2>";
+return;
+}
+
+// APPLY THEME
+const theme=profile.theme||"default";
+document.body.className="theme-"+theme;
+
+// username + verified
+let nameHTML="@"+profile.username;
+if(profile.verified===true){
+nameHTML+=` <span class="verified">✓</span>`;
+}
+document.getElementById("username").innerHTML=nameHTML;
+
+// bio
+document.getElementById("bio").innerText=profile.bio||"";
+
+// avatar
+if(profile.avatar){
+document.getElementById("avatar").style.background=`url('${profile.avatar}')`;
+document.getElementById("avatar").innerText="";
+}else{
+document.getElementById("avatar").innerText=profile.username.charAt(0).toUpperCase();
+}
+
+// links
+const {data:links}=await supabaseClient
+.from("links")
+.select("*")
+.eq("user_id",profile.id)
+.order("featured",{ascending:false})
+.order("position",{ascending:true});
+
+let html="";
+links.forEach(l=>{
+html+=`<a class="link" href="${l.url}" target="_blank">${l.title}</a>`;
+});
+
+document.getElementById("links").innerHTML=html;
+
+}
+
+load();
+</script>
+
+</body>
+</html>
