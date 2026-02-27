@@ -1,8 +1,0 @@
-{
-  "routes": [
-    { "handle": "filesystem" },
-    { "src": "/signup", "dest": "/signup.html" },
-    { "src": "/profile", "dest": "/profile.html" },
-    { "src": "/dashboard", "dest": "/dashboard.html" }
-  ]
-}
