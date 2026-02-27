@@ -1,4 +1,7 @@
 {
-  "cleanUrls": true,
-  "trailingSlash": false
+  "routes": [
+    { "src": "/signup", "dest": "/signup.html" },
+    { "src": "/profile", "dest": "/profile.html" },
+    { "src": "/dashboard", "dest": "/dashboard.html" }
+  ]
 }
