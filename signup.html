@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Sign Up - Linkarsha</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body style="background:black;color:white;font-family:sans-serif;text-align:center;margin-top:100px">
+
+<h1>Create account</h1>
+
+<input id="email" placeholder="Email" style="padding:12px;width:250px"><br><br>
+<input id="password" type="password" placeholder="Password" style="padding:12px;width:250px"><br><br>
+<input id="username" placeholder="Username" style="padding:12px;width:250px"><br><br>
+
+<button onclick="signup()" style="padding:14px 30px;background:purple;color:white;border:none;border-radius:8px">
+Create Account
+</button>
+
+<p id="msg"></p>
+
+<script>
+const supabase = window.supabase.createClient(
+"https://kgsunydafbgnivstjhcs.supabase.co",
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtnc3VueWRhZmJnbml2c3RqaGNzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxNzk3MTEsImV4cCI6MjA4Nzc1NTcxMX0.oTvJcbbsnXPdSq0wc7rSyjJIezCZUxTz1Xe6FoC6ybs"
+);
+
+async function signup(){
+const email = document.getElementById("email").value;
+const password = document.getElementById("password").value;
+const username = document.getElementById("username").value;
+
+const { data, error } = await supabase.auth.signUp({
+email: email,
+password: password
+});
+
+if(error){
+document.getElementById("msg").innerText = error.message;
+}else{
+document.getElementById("msg").innerText = "Account created. Check email.";
+}
+}
+</script>
+
+</body>
+</html>
